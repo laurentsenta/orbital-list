@@ -1,7 +1,14 @@
-import { ExampleComponent } from '.'
+import { AngularList } from '.'
+import { TimezoneClock } from '.'
 
-describe('ExampleComponent', () => {
+describe('AngularList', () => {
   it('is truthy', () => {
-    expect(ExampleComponent).toBeTruthy()
+    expect(AngularList).toBeTruthy()
+  })
+})
+
+describe('TimezoneClock', () => {
+  it('is truthy', () => {
+    expect(TimezoneClock).toBeTruthy()
   })
 })
