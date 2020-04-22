@@ -1,9 +1,9 @@
-import { AngularList } from '.'
+import { OrbitalList } from '.'
 import { TimezoneClock } from '.'
 
-describe('AngularList', () => {
+describe('OrbitalList', () => {
   it('is truthy', () => {
-    expect(AngularList).toBeTruthy()
+    expect(OrbitalList).toBeTruthy()
   })
 })
 
