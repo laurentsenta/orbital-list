@@ -1,4 +1,11 @@
-import React, { useLayoutEffect, useRef, useState, CSSProperties, createContext, useContext } from 'react'
+import React, {
+  useLayoutEffect,
+  useRef,
+  useState,
+  CSSProperties,
+  createContext,
+  useContext
+} from 'react'
 // import styles from './styles.module.css'
 
 interface Item {
@@ -30,31 +37,33 @@ const Dial: React.FC<{ style?: CSSProperties }> = ({ style }) => {
 }
 
 interface IPropsItem {
-  angle: number;
-  distance: number;
+  angle: number
+  distance: number
 }
 
 export const Item: React.FC<IPropsItem> = ({ angle, children, distance }) => {
-  const context = useContext(orbitalContext);
+  const context = useContext(orbitalContext)
 
   if (!context) {
     // TODO: handle this
     throw 'invalid context'
   }
 
-  const {radius} = context;
+  const { radius } = context
   const radAngle = angle * (Math.PI / 180)
-  const d = distance * radius;
-  const x = d * Math.cos(radAngle);
-  const y = d * Math.sin(radAngle);
+  const d = distance * radius
+  const x = d * Math.cos(radAngle)
+  const y = d * Math.sin(radAngle)
 
   return (
-    <div style={{
-      position: 'absolute',
-      left: x ,
-      top: y,
-      transform: 'translate(-50%, -50%)'
-    }}>
+    <div
+      style={{
+        position: 'absolute',
+        left: x,
+        top: y,
+        transform: 'translate(-50%, -50%)'
+      }}
+    >
       {angle}
       {children}
     </div>
@@ -62,12 +71,12 @@ export const Item: React.FC<IPropsItem> = ({ angle, children, distance }) => {
 }
 
 interface IOrbitalContext {
-  radius: number;
-  centerX: number;
-  centerY: number;
+  radius: number
+  centerX: number
+  centerY: number
 }
 
-const orbitalContext = createContext<IOrbitalContext | null>(null);
+const orbitalContext = createContext<IOrbitalContext | null>(null)
 
 const OrbitalWrapper: React.FC<{}> = ({ children }) => {
   const ref = useRef<HTMLDivElement>()
@@ -85,7 +94,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
     setSize({ width, height, squareSize })
   }, [ref])
 
-  const squareSize = size.squareSize;
+  const squareSize = size.squareSize
 
   const context = {
     radius: squareSize / 2,
@@ -95,12 +104,12 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
 
   return (
     <div
-    // this div wraps the whole orbital system so we can get the size we are given.
+      // this div wraps the whole orbital system so we can get the size we are given.
       style={{ width: '100%', height: '100%', backgroundColor: 'gray' }}
       ref={ref as React.RefObject<HTMLDivElement>}
     >
       <div
-      // here is the actual square space of the orbital system
+        // here is the actual square space of the orbital system
         style={{
           width: `${size.squareSize}px`,
           height: `${size.squareSize}px`,
@@ -110,18 +119,18 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
         }}
       >
         <div
-        // here is the coordinate system, we set our 0, 0 at the center of the system.
-         style={{
-          width: '100%',
-          height: '100%',
-          overflow: 'visible',
-          transform: 'translate(50%, 50%)'
-
-        }}>
-        <orbitalContext.Provider value={context}>
-        {children}
-        </orbitalContext.Provider>
-          </div>
+          // here is the coordinate system, we set our 0, 0 at the center of the system.
+          style={{
+            width: '100%',
+            height: '100%',
+            overflow: 'visible',
+            transform: 'translate(50%, 50%)'
+          }}
+        >
+          <orbitalContext.Provider value={context}>
+            {children}
+          </orbitalContext.Provider>
+        </div>
       </div>
     </div>
   )
@@ -152,10 +161,5 @@ export const TimezoneClock = ({ items }: IProps) => {
 }
 
 export const AngularList: React.FC<IProps> = ({ children }) => {
-  return (
-      <OrbitalWrapper>
-      {children}
-      </OrbitalWrapper>
-  )
+  return <OrbitalWrapper>{children}</OrbitalWrapper>
 }
-
