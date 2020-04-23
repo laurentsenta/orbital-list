@@ -1,13 +1,13 @@
-# timezone-clock
+# orbital-list
 
 > TODO
 
-[![NPM](https://img.shields.io/npm/v/timezone-clock.svg)](https://www.npmjs.com/package/timezone-clock) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/orbital-list.svg)](https://www.npmjs.com/package/orbital-list) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Install
 
 ```bash
-npm install --save timezone-clock
+npm install --save orbital-list
 ```
 
 ## Usage
@@ -15,8 +15,8 @@ npm install --save timezone-clock
 ```tsx
 import React, { Component } from 'react'
 
-import MyComponent from 'timezone-clock'
-import 'timezone-clock/dist/index.css'
+import MyComponent from 'orbital-list'
+import 'orbital-list/dist/index.css'
 
 class Example extends Component {
   render() {

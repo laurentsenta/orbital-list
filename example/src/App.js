@@ -9,8 +9,8 @@ import {
   Slice,
   Orbit,
   Label
-} from 'timezone-clock'
-import 'timezone-clock/dist/index.css'
+} from 'orbital-list'
+import 'orbital-list/dist/index.css'
 
 const App = () => {
   return (

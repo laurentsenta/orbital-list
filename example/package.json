@@ -1,13 +1,13 @@
 {
-  "name": "timezone-clock-example",
-  "homepage": "https://lsenta.github.io/timezone-clock",
+  "name": "orbital-list-example",
+  "homepage": "https://lsenta.github.io/orbital-list",
   "version": "0.0.0",
   "private": true,
   "dependencies": {
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
     "react-scripts": "link:../node_modules/react-scripts",
-    "timezone-clock": "link:.."
+    "orbital-list": "link:.."
   },
   "scripts": {
     "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
