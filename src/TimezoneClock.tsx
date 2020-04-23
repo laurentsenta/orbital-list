@@ -1,12 +1,14 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import OrbitalList from './OrbitalList'
 import Dial from './Dial'
 import Label from './Label'
 import Planet from './Planet'
-// import styles from './styles.module.css'
+import Hand from './Hand'
+import Slice from './Slice'
+import Orbit from './Orbit'
+import { useDatetime, uniq } from './utils'
 
 interface Item {
-  type: 'person'
   timezoneOffset: number
   color: string
   id: string
@@ -27,53 +29,20 @@ const TICKS = [
   { label: '21', hour: 21 }
 ]
 
-import { useState, useEffect, useRef } from 'react'
-import Hand from './Hand'
-import Slice from './Slice'
-import Orbit from './Orbit'
-
-const useDatetime = () => {
-  const ref = useRef<NodeJS.Timeout>()
-  const [datetime, setDatetime] = useState(new Date())
-
-  const ticker = useCallback(
-    () =>
-      setInterval(() => {
-        setDatetime(new Date())
-      }, 1000),
-    []
-  )
-
-  useEffect(() => {
-    if (!ref.current) {
-      ref.current = ticker()
-    }
-    return () => clearInterval(ref.current!)
-  }, [])
-
-  return datetime
-}
-
-function uniq<T>(xs: T[]): T[] {
-  const s = new Set<T>(xs)
-  const r: T[] = []
-  s.forEach((x) => r.push(x))
-  return r
-}
-
 const ANGLE_DELTA = 90 // turn so that 12:00 is at the top.
 
 const asAngle = (hours: number, minutes: number = 0) => {
   return (hours / 24) * 360 + (minutes / 60) * (360 / 24) + ANGLE_DELTA
 }
 
-const TimezoneClock = ({ items }: IProps) => {
-  // TODO: deal with element resizings.
-  const time = useDatetime()
+interface AugmentedItem extends Item {
+  hour: number
+  minute: number
+  layer: number
+}
 
-  const angleSeconds = (time.getSeconds() / 60) * 360
-
-  const itemsWithTime = items.map((item) => {
+const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
+  const withHoursAndMinutes = items.map((item) => {
     const minutes =
       time.getUTCHours() * 60 - item.timezoneOffset + time.getUTCMinutes()
 
@@ -84,31 +53,49 @@ const TimezoneClock = ({ items }: IProps) => {
     }
   })
 
-  const activeHours: number[] = uniq(itemsWithTime.map((x) => x.hour))
+  /*
+   * set a layer for every item,
+   * prevent collisions / items to close to each other.
+   */
+  const layerUsed = {}
 
-  const forbiddenDistances = {}
-  const itemsWithTimeAndDistance = itemsWithTime.map((item) => {
+  const use = (hour: number, distance: number) => {
+    const H = hour + (24 % 24) // prevent issues on -1 and +1
+    layerUsed[H] = Math.max(layerUsed[H] | 0, distance)
+  }
+
+  const withLayer = withHoursAndMinutes.map((item) => {
     const { hour } = item
-    const distance =
-      forbiddenDistances[hour] !== undefined ? forbiddenDistances[hour] + 1 : 0
-    forbiddenDistances[hour] = Math.max(distance, forbiddenDistances[hour] | 0)
-    forbiddenDistances[hour + (1 % 24)] = Math.max(
-      distance,
-      forbiddenDistances[hour + (1 % 24)] | 0
-    )
-    forbiddenDistances[hour - 1 + (24 % 24)] = Math.max(
-      distance,
-      forbiddenDistances[hour - 1 + (24 % 24)] | 0
-    )
-    return { ...item, distance }
-  })
-  const maxDistance = Math.max(
-    ...itemsWithTimeAndDistance.map((x) => x.distance)
-  )
-  const distanceRatio = maxDistance === 0 ? 1 : 1 / maxDistance
+    const layer = layerUsed[hour] !== undefined ? layerUsed[hour] + 1 : 0
 
-  const itemDistance = (distance: number, min: number, max: number): number =>
-    (max - min) * ((maxDistance - distance) * distanceRatio) + min
+    use(hour, layer)
+    use(hour + 1, layer)
+    use(hour - 1, layer)
+
+    return { ...item, layer }
+  })
+
+  return withLayer
+}
+
+const TimezoneClock = (props: IProps) => {
+  // TODO: deal with element resizings.
+  const time = useDatetime()
+
+  const angleSeconds = (time.getSeconds() / 60) * 360
+
+  const items = augmentItems(time, props.items)
+  const activeHours: number[] = uniq(items.map((x) => x.hour))
+
+  const maxLayer = Math.max(...items.map((x) => x.layer))
+  const layerCoeficient = maxLayer === 0 ? 1 : 1 / maxLayer
+
+  const LAYER_MIN = 0.2
+  const LAYER_MAX = 0.7
+  const LAYER_RANGE = LAYER_MAX - LAYER_MIN
+
+  const distance = (layer: number): number =>
+    LAYER_MIN + layer * layerCoeficient * LAYER_RANGE
 
   return (
     <OrbitalList>
@@ -166,14 +153,14 @@ const TimezoneClock = ({ items }: IProps) => {
         length={0.7}
       />
       <Dial className='Dial' radius={0.08} color='red' />
-      {itemsWithTimeAndDistance.map(({ id, color, hour, minute, distance }) => {
+      {items.map(({ id, color, hour, minute, layer }) => {
         return (
           <Planet
             key={id}
             style={{ backgroundColor: color }}
             angle={asAngle(hour, minute)}
-            radius={0.1}
-            distance={itemDistance(distance, 0.2, 0.7)}
+            radius={0.07}
+            distance={distance(layer)}
           >
             {id}
           </Planet>

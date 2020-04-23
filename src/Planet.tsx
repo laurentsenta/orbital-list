@@ -11,36 +11,28 @@ interface IProps {
   className?: string
 }
 
-const Planet: React.FC<IProps> = ({
-  angle,
-  children,
-  distance,
-  radius,
-  color,
-  style,
-  className
-}) => {
+const Planet: React.FC<IProps> = (props) => {
+  const { angle, children, distance, radius, color, className } = props
   const context = useContext(orbitalContext)
 
   if (!context) {
     throw new Error('invalid context')
   }
 
-  const size = `${radius * 2 * context.radius}px`
+  const size = `${context.radius * radius * 2}px`
 
-  // TODO: find a better way to implement this pattern.
-  const s = {
+  const style = {
     width: size,
     height: size,
     borderRadius: '50%',
     ...(color ? { backgroundColor: color } : {}),
-    ...style
+    ...props.style
   }
 
   const params = className ? { className } : {}
 
   return (
-    <Place {...params} angle={angle} distance={distance || 0} style={s}>
+    <Place {...params} angle={angle} distance={distance || 0} style={style}>
       {children}
     </Place>
   )

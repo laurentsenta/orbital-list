@@ -20,54 +20,72 @@ const Slice: React.FC<IProps> = (props) => {
     throw 'invalid context'
   }
 
-  const { children, color, length } = props
-  const { radius } = context
+  const { children, color } = props
 
   const angleStart = props.angleStart % 360
   const angleEnd = props.angleEnd % 360
 
-  let actualLength = 1
+  const angle = angleEnd - angleStart
+  const radAngle = angle * (Math.PI / 180)
 
-  let squareSize = 0
+  const radius = (props.length || 1) * context.radius
 
-  actualLength = (length || 1) * radius
-  squareSize = actualLength * 2
+  // We render as a box with a border-radius: 50%
+  const squareSize = radius * 2
 
-  const squareRadius = squareSize / 2 // when looking for the center of the square.
+  const middle = `${squareSize / 2}px`
+  const left = '0px'
+  const right = `${squareSize}px`
+  const top = '0px'
+  const bottom = `${squareSize}px`
 
-  const actualAngle = angleEnd - angleStart
-  const radAngle = actualAngle * (Math.PI / 180)
+  const at = (x: string, y: string): string => `${x} ${y}`
 
+  /*
+   * We render a box with a border-radius so it shows as a circle.
+   * to clip the box to display a given angle we move around the box (0 -> 1 -> 2 -> 3 -> 4 -> 5)
+   *
+   * 4-----+-----5
+   * |     .     |
+   * |     .     |
+   * + ... 0 ... 1
+   * |     .     |
+   * |     .     |
+   * 3-----+-----2
+   *
+   * When we're in the correct cadrant (depends on the angle),
+   * we close the polygon.
+   *
+   * .           .
+   * +-----------0-----------1
+   * |         / .           |
+   * ||      /   .          ||
+   * | |   /     .         | |
+   * |  'X       .      __'  |
+   * |  / --___  . ___--     |
+   * 3-----+-----+-----------2
+   *
+   */
   const points = [
-    `${squareRadius}px ${squareRadius}px`, // center
-    `${squareRadius * 2}px ${squareRadius}px`, // center ---> right
-    `${squareRadius * 2}px ${squareRadius * 2}px` // right vvvv bottom right
+    at(middle, middle), // 0
+    at(right, middle), // 0 --> 1
+    at(right, bottom) // 1 --> 2
   ]
 
-  if (actualAngle > 90) {
-    points.push(
-      `${0}px ${squareRadius * 2}px` // bottom left <--- bottom right
-    )
+  if (angle > 90) {
+    points.push(at(left, bottom)) // 2 --> 3
   }
-  if (actualAngle > 180) {
-    points.push(
-      `${0}px ${0}px` // bottom left ^^^ top left
-    )
+  if (angle > 180) {
+    points.push(at(left, top)) // 3 --> 4
   }
-  if (actualAngle > 180) {
-    points.push(
-      `${0}px ${0}px` // bottom left ^^^ top left
-    )
-  }
-  if (actualAngle > 270) {
-    points.push(
-      `${squareRadius * 2}px ${0}px` // top left ---> top right
-    )
+  if (angle > 270) {
+    points.push(at(right, top)) // 4 --> 5
   }
 
-  const x = squareRadius + squareRadius * Math.cos(radAngle)
-  const y = squareRadius + squareRadius * Math.sin(radAngle)
-  points.push(`${x}px ${y}px`)
+  // --> X (middle + trigonometry)
+  const x = radius + radius * Math.cos(radAngle)
+  const y = radius + radius * Math.sin(radAngle)
+  points.push(at(x + 'px', y + 'px'))
 
   const clipPath = `polygon(${points.join(',')})`
 
@@ -76,9 +94,7 @@ const Slice: React.FC<IProps> = (props) => {
     ...(color ? { backgroundColor: color } : {}),
     ...props.style,
     position: 'absolute',
-    transform: `translate(-${squareSize / 2}px, -${
-      squareSize / 2
-    }px) rotate(${angleStart}deg)`,
+    transform: `translate(-${radius}px, -${radius}px) rotate(${angleStart}deg)`,
     clipPath,
     left: 0,
     top: 0,

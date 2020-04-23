@@ -23,17 +23,20 @@ const Hand: React.FC<IProps> = (props) => {
     throw 'invalid context'
   }
 
-  const { angle, children, color, width, length, start, end } = props
+  const { angle, children, color, width } = props
   const { radius } = context
 
   let actualLength = 1
   let baseDistance = 0
 
-  if (start !== undefined || end !== undefined) {
-    actualLength = radius * ((end || 1) - (start || 0))
-    baseDistance = (start || 0) * radius
+  if (props.start !== undefined || props.end !== undefined) {
+    const start = props.start || 0
+    const end = props.end || 1
+    actualLength = radius * (end - start)
+    baseDistance = radius * start
   } else {
-    actualLength = (length || 1) * radius
+    const length = props.length || 1
+    actualLength = radius * length
     baseDistance = 0
   }
 
