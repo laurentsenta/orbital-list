@@ -7,7 +7,8 @@ import {
   Dial,
   Hand,
   Slice,
-  Orbit
+  Orbit,
+  Label
 } from 'timezone-clock'
 import 'timezone-clock/dist/index.css'
 
@@ -78,6 +79,15 @@ const App = () => {
           <Hand width={2} angle={5} start={0.2} end={0.9} color='orange' />
           <Orbit color='#997700' radius={0.5} />
           <Orbit color='#997700' radius={0.9} />
+          <Label angle={0} distance={0.7}>
+            01
+          </Label>
+          <Label angle={90} distance={0.8}>
+            02
+          </Label>
+          <Label angle={135} distance={0.9}>
+            02.5
+          </Label>
         </OrbitalList>
       </div>
     </div>
