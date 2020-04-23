@@ -26,7 +26,8 @@ const App = () => {
       <h1>Angular List</h1>
       <div style={{ width: '500x', height: '500px' }}>
         <OrbitalList>
-          <Dial />
+          <Dial color='#444' />
+          <Dial color='#AAA' radius={0.05} />
           <Place angle={0} distance={0.5}>
             <span>Hello</span>
           </Place>
@@ -46,8 +47,9 @@ const App = () => {
             <span>I think</span>
           </Place>
           <Planet angle={50} color='blue' radius={0.1} distance={0.2} />
-          <Hand width={1} angle={90} length={1} color='#EFFEFE' />
-          <Hand width={2} angle={95} start={0.1} end={0.9} color='#333' />
+          {/* <Hand width={1} angle={90} length={1} color='#EFFEFE' />
+          <Hand width={2} angle={95} end={0.9} color='#333' /> */}
+          <Hand width={2} angle={5} start={0.2} end={0.9} color='#333' />
         </OrbitalList>
       </div>
     </div>
