@@ -20,8 +20,11 @@ const Slice: React.FC<IProps> = (props) => {
     throw 'invalid context'
   }
 
-  const { angleStart, angleEnd, children, color, length } = props
+  const { children, color, length } = props
   const { radius } = context
+
+  const angleStart = props.angleStart % 360
+  const angleEnd = props.angleEnd % 360
 
   let actualLength = 1
 

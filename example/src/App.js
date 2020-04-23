@@ -25,7 +25,11 @@ const App = () => {
               color: 'blue',
               id: 'Parisian'
             },
-            { type: 'person', timezoneOffset: +40, color: 'red', id: 'b' },
+            { type: 'person', timezoneOffset: +60, color: 'red', id: 'b' },
+            { type: 'person', timezoneOffset: +60, color: 'orange', id: 'c' },
+            { type: 'person', timezoneOffset: +60, color: 'pink', id: 'd' },
+            { type: 'person', timezoneOffset: -120, color: 'gray', id: 'e' },
+            { type: 'person', timezoneOffset: +240, color: 'gray', id: 'g' },
             { type: 'person', timezoneOffset: 0, color: 'green', id: 'UTCBoy' }
           ]}
         />
