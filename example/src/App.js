@@ -1,5 +1,12 @@
 import React from 'react'
-import { TimezoneClock, OrbitalList, Place, Planet, Dial } from 'timezone-clock'
+import {
+  TimezoneClock,
+  OrbitalList,
+  Place,
+  Planet,
+  Dial,
+  Hand
+} from 'timezone-clock'
 import 'timezone-clock/dist/index.css'
 
 const App = () => {
@@ -39,6 +46,8 @@ const App = () => {
             <span>I think</span>
           </Place>
           <Planet angle={50} color='blue' radius={0.1} distance={0.2} />
+          <Hand width={1} angle={90} length={1} color='#EFFEFE' />
+          <Hand width={2} angle={95} start={0.1} end={0.9} color='#333' />
         </OrbitalList>
       </div>
     </div>

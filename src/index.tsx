@@ -1,5 +1,6 @@
 export { default as OrbitalList } from './OrbitalList'
 export { default as Dial } from './Dial'
 export { default as Place } from './Place'
+export { default as Hand } from './Hand'
 export { default as Planet } from './Planet'
 export { default as TimezoneClock } from './TimezoneClock'
