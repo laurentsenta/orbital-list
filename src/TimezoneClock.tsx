@@ -18,14 +18,8 @@ const TimezoneClock = ({ items }: IProps) => {
 
   return (
     <OrbitalWrapper>
-      <Dial
-        style={{
-          width: '10%',
-          height: '10%',
-          backgroundColor: 'pink',
-          borderRadius: '50%'
-        }}
-      />
+      <Dial className='Dial' radius={1} color='red' />
+      <Dial className='Dial' radius={0.1} color='pink' />
       {items.map((item, i) => {
         return (
           <div key={i} style={{ backgroundColor: item.color }}>

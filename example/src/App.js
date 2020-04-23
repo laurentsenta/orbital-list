@@ -1,6 +1,5 @@
 import React from 'react'
-
-import { TimezoneClock, OrbitalList, Place } from 'timezone-clock'
+import { TimezoneClock, OrbitalList, Place, Planet, Dial } from 'timezone-clock'
 import 'timezone-clock/dist/index.css'
 
 const App = () => {
@@ -20,6 +19,7 @@ const App = () => {
       <h1>Angular List</h1>
       <div style={{ width: '500x', height: '500px' }}>
         <OrbitalList>
+          <Dial />
           <Place angle={0} distance={0.5}>
             <span>Hello</span>
           </Place>
@@ -38,6 +38,7 @@ const App = () => {
           <Place angle={720} distance={0.95}>
             <span>I think</span>
           </Place>
+          <Planet angle={50} color='blue' radius={0.1} distance={0.2} />
         </OrbitalList>
       </div>
     </div>

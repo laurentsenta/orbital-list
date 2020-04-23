@@ -1,21 +1,19 @@
 import React, { CSSProperties } from 'react'
+import Planet from './Planet'
 
-const Dial: React.FC<{ style?: CSSProperties }> = ({ style }) => {
-  return (
-    <div
-      style={{
-        ...{
-          position: 'absolute',
-          left: '0%',
-          top: '0%',
-          transform: 'translate(-50%, -50%)'
-        },
-        ...(style || {})
-      }}
-    >
-      Dial
-    </div>
-  )
+interface IProps {
+  style?: CSSProperties
+  className?: string
+  color?: string
+  radius?: number
+}
+const Dial: React.FC<IProps> = ({ style, className, color, radius }) => {
+  const p = {
+    ...(style ? { style } : {}),
+    ...(className ? { className } : {}),
+    ...(color ? { color } : {})
+  }
+  return <Planet distance={0} angle={0} radius={radius || 1} {...p} />
 }
 
 export default Dial
