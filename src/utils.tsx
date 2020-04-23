@@ -28,3 +28,40 @@ export function uniq<T>(xs: T[]): T[] {
   s.forEach((x) => r.push(x))
   return r
 }
+
+export function useEventListener(
+  eventName: string,
+  handler: EventListener,
+  ref: React.RefObject<HTMLElement>
+) {
+  // https://usehooks.com/useEventListener/
+  // remember to use "useCallback" on your handler.
+
+  useEffect(() => {
+    const { current } = ref
+
+    if (!current) {
+      console.warn('ref current not set!')
+      return
+    }
+
+    const isSupported = current.addEventListener
+    if (!isSupported) {
+      throw new Error('event listener not supported')
+    }
+
+    current.addEventListener(eventName, handler)
+
+    return () => {
+      current.removeEventListener(eventName, handler)
+    }
+  }, [eventName, ref.current, handler])
+}
+
+export const toRadians = (deg: number) => {
+  return deg * (Math.PI / 180)
+}
+
+export const toDeg = (radians: number) => {
+  return radians * (180 / Math.PI)
+}

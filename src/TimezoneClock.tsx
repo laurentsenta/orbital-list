@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useCallback, useState } from 'react'
 import OrbitalList from './OrbitalList'
 import Dial from './Dial'
 import Label from './Label'
@@ -6,7 +6,8 @@ import Planet from './Planet'
 import Hand from './Hand'
 import Slice from './Slice'
 import Orbit from './Orbit'
-import { useDatetime, uniq } from './utils'
+import { useDatetime, uniq, toDeg } from './utils'
+import DragRegion, { IDragInfo } from './DragRegion'
 
 interface Item {
   timezoneOffset: number
@@ -80,7 +81,30 @@ const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
 
 const TimezoneClock = (props: IProps) => {
   // TODO: deal with element resizings.
-  const time = useDatetime()
+  const myTime = useDatetime()
+
+  const [delta, setDelta] = useState(0) // unit is minutes
+
+  const onDrag = useCallback((i: IDragInfo) => {
+    const { start, current, last } = i
+
+    if (last && !start) {
+      setDelta(0)
+      return
+    }
+
+    if (!start || !current) {
+      return
+    }
+
+    const startAngle = Math.atan2(start.y, start.x)
+    const currentAngle = Math.atan2(current.y, current.x)
+
+    setDelta((toDeg(currentAngle - startAngle) / 360) * 24 * 60)
+  }, [])
+
+  const time = new Date(myTime)
+  time.setMinutes(time.getMinutes() + delta)
 
   const angleSeconds = (time.getSeconds() / 60) * 360
 
@@ -153,6 +177,7 @@ const TimezoneClock = (props: IProps) => {
         length={0.7}
       />
       <Dial className='Dial' radius={0.08} color='red' />
+      <DragRegion onDrag={onDrag} />
       {items.map(({ id, color, hour, minute, layer }) => {
         return (
           <Planet
