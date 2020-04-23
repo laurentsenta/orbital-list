@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from 'react'
+import React, { useCallback, useState, useEffect } from 'react'
 import OrbitalList from './OrbitalList'
 import Dial from './Dial'
 import Label from './Label'
@@ -79,11 +79,54 @@ const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
   return withLayer
 }
 
+const useAnimatedState = (
+  s: number
+): [number, (x: number) => void, (x: number) => void] => {
+  const [current, setCurrent] = useState(s)
+  const [target, setTarget] = useState(s)
+
+  const reset = useCallback(
+    (x: number) => {
+      setCurrent(x)
+      setTarget(x)
+    },
+    [setCurrent, setTarget]
+  )
+
+  const f = useCallback(() => {
+    if (current > target - 0.1 && current < target + 0.1) {
+      setCurrent(target)
+      return
+    }
+
+    if (current < target) {
+      setCurrent((x) => x + (target - x) / 2)
+    } else if (current > target) {
+      setCurrent((x) => x - (x - target) / 2)
+    }
+  }, [target, current])
+
+  useEffect(() => {
+    // create callback that updates current until current === target
+    if (target === current) {
+      return
+    }
+    const i = setInterval(f, 10)
+    return () => clearInterval(i)
+  }, [current, target])
+
+  return [current, setTarget, reset]
+}
+
 const TimezoneClock = (props: IProps) => {
   // TODO: deal with element resizings.
   const myTime = useDatetime()
+  const [delta, setDelta, resetDelta] = useAnimatedState(0) // unit is minutes
+  const [seconds, setSeconds] = useAnimatedState(myTime.getSeconds())
 
-  const [delta, setDelta] = useState(0) // unit is minutes
+  useEffect(() => {
+    setSeconds(myTime.getSeconds())
+  }, [myTime.getSeconds()])
 
   const onDrag = useCallback((i: IDragInfo) => {
     const { start, current, last } = i
@@ -100,13 +143,13 @@ const TimezoneClock = (props: IProps) => {
     const startAngle = Math.atan2(start.y, start.x)
     const currentAngle = Math.atan2(current.y, current.x)
 
-    setDelta((toDeg(currentAngle - startAngle) / 360) * 24 * 60)
+    resetDelta((toDeg(currentAngle - startAngle) / 360) * 24 * 60)
   }, [])
 
   const time = new Date(myTime)
   time.setMinutes(time.getMinutes() + delta)
 
-  const angleSeconds = (time.getSeconds() / 60) * 360
+  const angleSeconds = (seconds / 60) * 360
 
   const items = augmentItems(time, props.items)
   const activeHours: number[] = uniq(items.map((x) => x.hour))

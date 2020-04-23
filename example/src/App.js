@@ -16,7 +16,7 @@ const App = () => {
   return (
     <div>
       <h1>Timezone Clock</h1>
-      <div style={{ width: '500x', height: '500px' }}>
+      <div style={{ width: '100%', height: '80vh' }}>
         <TimezoneClock
           items={[
             {
@@ -36,7 +36,7 @@ const App = () => {
       </div>
 
       <h1>Orbital List</h1>
-      <div style={{ width: '500x', height: '500px' }}>
+      <div style={{ width: '100%', height: '80vh' }}>
         <OrbitalList>
           <Dial color='#444' />
           <Dial color='#AAA' radius={0.05} />

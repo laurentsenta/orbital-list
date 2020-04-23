@@ -1,4 +1,11 @@
-import React, { createContext, useRef, useState, useLayoutEffect } from 'react'
+import React, {
+  createContext,
+  useRef,
+  useState,
+  useLayoutEffect,
+  useCallback
+} from 'react'
+import { useEventListener } from './utils'
 
 interface IOrbitalContext {
   radius: number
@@ -12,7 +19,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
   const ref = useRef<HTMLDivElement>()
   const [size, setSize] = useState({ width: 0, height: 0, squareSize: 0 })
 
-  useLayoutEffect(() => {
+  const onResize = useCallback(() => {
     if (!ref.current) {
       return
     }
@@ -20,9 +27,12 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
     const width = ref.current.offsetWidth
     const height = ref.current.offsetHeight
     const squareSize = Math.min(width, height)
-
     setSize({ width, height, squareSize })
   }, [ref])
+
+  useLayoutEffect(onResize, [ref])
+
+  useEventListener('resize', onResize)
 
   const squareSize = size.squareSize
 
