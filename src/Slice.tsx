@@ -96,6 +96,7 @@ const Slice: React.FC<IProps> = (props) => {
     position: 'absolute',
     transform: `translate(-${radius}px, -${radius}px) rotate(${angleStart}deg)`,
     clipPath,
+    WebkitClipPath: clipPath,
     left: 0,
     top: 0,
     width: `${squareSize}px`,
