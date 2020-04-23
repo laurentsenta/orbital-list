@@ -19,14 +19,19 @@ const App = () => {
       <div style={{ width: '500x', height: '500px' }}>
         <TimezoneClock
           items={[
-            { type: 'person', timezoneOffset: '+00:00', color: 'blue' },
-            { type: 'person', timezoneOffset: '+01:00', color: 'blue' },
-            { type: 'person', timezoneOffset: '+01:00', color: 'blue' }
+            {
+              type: 'person',
+              timezoneOffset: -120,
+              color: 'blue',
+              id: 'Parisian'
+            },
+            { type: 'person', timezoneOffset: +40, color: 'red', id: 'b' },
+            { type: 'person', timezoneOffset: 0, color: 'green', id: 'UTCBoy' }
           ]}
         />
       </div>
 
-      <h1>Angular List</h1>
+      <h1>Orbital List</h1>
       <div style={{ width: '500x', height: '500px' }}>
         <OrbitalList>
           <Dial color='#444' />
