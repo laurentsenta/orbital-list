@@ -105,12 +105,12 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = ({
   }, [dragInfo, onDrag])
 
   useEventListener('mousedown', onMouseDown, ref)
-  useEventListener('mouseup', onMouseUp, ref)
-  useEventListener('mousemove', onMouseMove, ref)
+  useEventListener('mouseup', onMouseUp)
+  useEventListener('mousemove', onMouseMove)
 
   useEventListener('touchstart', onMouseDown, ref)
-  useEventListener('touchend', onMouseUp, ref)
-  useEventListener('touchmove', onMouseMove, ref)
+  useEventListener('touchend', onMouseUp)
+  useEventListener('touchmove', onMouseMove)
 
   if (!context) {
     throw new Error('invalid context')
