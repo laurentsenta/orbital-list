@@ -45,7 +45,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
   return (
     <div
       // this div wraps the whole orbital system so we can get the size we are given.
-      style={{ width: '100%', height: '100%', backgroundColor: 'gray' }}
+      style={{ width: '100%', height: '100%' }}
       ref={ref as React.RefObject<HTMLDivElement>}
     >
       <div
@@ -53,7 +53,6 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
         style={{
           width: `${size.squareSize}px`,
           height: `${size.squareSize}px`,
-          border: '1px solid red',
           margin: 'auto',
           position: 'relative'
         }}

@@ -19,7 +19,7 @@ const cityToOffset = (city) => tz.zone(city).utcOffset(now)
 
 const App = () => {
   return (
-    <div>
+    <main>
       <h1>Timezone Clock</h1>
       <div style={{ width: '100%', height: '80vh' }}>
         <TimezoneClock
@@ -34,83 +34,153 @@ const App = () => {
             },
             id: u.name
           }))}
-
-          //   [
-          //   { type: 'person', timezoneOffset: +60, color: 'red', id: 'b' },
-          //   { type: 'person', timezoneOffset: +60, color: 'orange', id: 'c' },
-          //   { type: 'person', timezoneOffset: +60, color: 'pink', id: 'd' },
-          //   { type: 'person', timezoneOffset: -120, color: 'gray', id: 'e' },
-          //   { type: 'person', timezoneOffset: +240, color: 'gray', id: 'g' },
-          //   { type: 'person', timezoneOffset: 0, color: 'green', id: 'UTCBoy' }
-          // ]}
         />
       </div>
 
       <h1>Orbital List</h1>
       <div style={{ width: '100%', height: '80vh' }}>
         <OrbitalList>
-          <Dial color='#444' />
-          <Dial color='#AAA' radius={0.05} />
+          <Dial color='#1f2041' />
           <Slice
-            color='rgba(255, 255, 55, 0.2)'
+            color='rgba(75, 63, 114, 1)'
             length={0.5}
-            angleStart={0}
-            angleEnd={90 / 4}
+            angleStart={180 + 22.5 * 1}
+            angleEnd={180 + 22.5 * 5 - 1}
           />
           <Slice
-            color='rgba(255, 0, 255, 0.2)'
-            length={0.6}
-            angleStart={90 / 4}
-            angleEnd={90}
+            color='rgba(75, 63, 114, 1)'
+            length={0.9}
+            angleStart={180 + 22.5 * 5}
+            angleEnd={180 + 22.5 * 6 - 1}
           />
           <Slice
-            color='rgba(255, 0, 255, 0.2)'
+            color='rgba(75, 63, 114, 1)'
             length={0.7}
-            angleStart={(90 / 4) * 2}
-            angleEnd={90}
+            angleStart={180 + 22.5 * 6}
+            angleEnd={180 + 22.5 * 8}
           />
+
           <Slice
-            color='rgba(255, 0, 255, 0.2)'
-            length={0.8}
-            angleStart={(90 / 4) * 2}
-            angleEnd={270}
+            color='rgba(75, 63, 114, 0.5)'
+            length={0.9}
+            angleStart={166}
+            angleEnd={182}
           />
-          <Place angle={0} distance={0.5}>
-            <span>Hello</span>
+          <Place
+            angle={180}
+            distance={0.8}
+            style={{ color: '#ed254e', fontSize: '1.2rem', fontWeight: 'bold' }}
+          >
+            <button>Hello</button>
           </Place>
-          <Place angle={90} distance={0.5}>
-            <span>World</span>
+          <Place
+            angle={170}
+            distance={0.7}
+            style={{ color: '#ed254e', fontSize: '1.2rem', fontWeight: 'bold' }}
+          >
+            <button>World</button>
           </Place>
-          <Place angle={180} distance={0.5}>
-            <span>This</span>
+          <Place
+            angle={180}
+            distance={0.6}
+            style={{ color: '#ed254e', fontSize: '1.2rem', fontWeight: 'bold' }}
+          >
+            <ul>
+              <li>Hello</li>
+            </ul>
           </Place>
-          <Place angle={270} distance={0.5}>
-            <span>Is</span>
+          <Place
+            angle={170}
+            distance={0.5}
+            style={{ color: '#ed254e', fontSize: '1.2rem', fontWeight: 'bold' }}
+          >
+            <ul>
+              <li>Universe</li>
+            </ul>{' '}
           </Place>
-          <Place angle={360} distance={0.75}>
-            <span>Working</span>
-          </Place>
-          <Place angle={720} distance={0.95}>
-            <span>I think</span>
-          </Place>
-          <Planet angle={50} color='blue' radius={0.1} distance={0.2} />
-          <Hand width={1} angle={0} length={1} color='red' />
-          <Hand width={2} angle={95} end={0.9} color='#333' />
-          <Hand width={2} angle={5} start={0.2} end={0.9} color='orange' />
-          <Orbit color='#997700' radius={0.5} />
-          <Orbit color='#997700' radius={0.9} />
-          <Label angle={0} distance={0.7}>
-            01
-          </Label>
-          <Label angle={90} distance={0.8}>
-            02
-          </Label>
-          <Label angle={135} distance={0.9}>
-            02.5
-          </Label>
+
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.15} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.16} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.17} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.18} width={2} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.2} width={2} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.22} width={2} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.24} width={3} />
+          <Orbit color='rgba(244, 205, 205, 1)' radius={0.28} width={4} />
+
+          <React.Fragment>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+              <Planet
+                key={`planet-${x}`}
+                angle={60 + Math.pow(x, 1.5) * 4}
+                color='#4062BB'
+                radius={0.05 + Math.pow(x / 20, 2.2) * 0.6}
+                distance={0.4 + x * 0.058}
+              />
+            ))}
+            )
+          </React.Fragment>
+          <React.Fragment>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+              <Hand
+                key={x}
+                width={Math.pow(x + 1, 1.1) * 0.3}
+                angle={Math.pow(x + 1, 1.3)}
+                length={0.4 + (x + 1) / 20}
+                color='orange'
+                style={{ borderRadius: '0.3rem' }}
+              />
+            ))}
+          </React.Fragment>
+
+          <React.Fragment>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+              <Hand
+                key={x}
+                width={Math.pow(x + 1, 1.1) * 0.5}
+                angle={25 + Math.pow(x + 1, 1.3)}
+                start={0.8}
+                end={0.9}
+                color='orange'
+                style={{ borderRadius: '0.3rem' }}
+              />
+            ))}
+          </React.Fragment>
+          <React.Fragment>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+              <Hand
+                key={x}
+                width={Math.pow(x + 1, 1.1) * 0.5}
+                angle={30 + Math.pow(x + 1, 1.3)}
+                start={0.65}
+                end={0.75}
+                color='orange'
+                style={{ borderRadius: '0.3rem' }}
+              />
+            ))}
+          </React.Fragment>
+          <React.Fragment>
+            {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
+              <Label
+                key={`label-${x}`}
+                angle={215 + x * 5}
+                distance={0.7}
+                style={{
+                  color: '#ed254e',
+                  fontSize: '1.2rem',
+                  fontWeight: 'bold'
+                }}
+              >
+                {x}
+              </Label>
+            ))}
+            )
+          </React.Fragment>
+
+          <Dial color='#131335' radius={0.1} />
         </OrbitalList>
       </div>
-    </div>
+    </main>
   )
 }
 
