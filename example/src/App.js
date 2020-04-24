@@ -1,16 +1,21 @@
-import React from 'react'
+import { tz } from 'moment-timezone'
 import {
-  TimezoneClock,
+  Dial,
+  Hand,
+  Label,
+  Orbit,
   OrbitalList,
   Place,
   Planet,
-  Dial,
-  Hand,
   Slice,
-  Orbit,
-  Label
+  TimezoneClock
 } from 'orbital-list'
 import 'orbital-list/dist/index.css'
+import React from 'react'
+import USERS from './users'
+
+const now = new Date()
+const cityToOffset = (city) => tz.zone(city).utcOffset(now)
 
 const App = () => {
   return (
@@ -18,20 +23,26 @@ const App = () => {
       <h1>Timezone Clock</h1>
       <div style={{ width: '100%', height: '80vh' }}>
         <TimezoneClock
-          items={[
-            {
-              type: 'person',
-              timezoneOffset: -120,
-              color: 'blue',
-              id: 'Parisian'
+          items={USERS.map((u) => ({
+            type: 'person',
+            timezoneOffset: cityToOffset(u.city),
+            color: 'white',
+            style: {
+              backgroundImage: `url(${u.img})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center center'
             },
-            { type: 'person', timezoneOffset: +60, color: 'red', id: 'b' },
-            { type: 'person', timezoneOffset: +60, color: 'orange', id: 'c' },
-            { type: 'person', timezoneOffset: +60, color: 'pink', id: 'd' },
-            { type: 'person', timezoneOffset: -120, color: 'gray', id: 'e' },
-            { type: 'person', timezoneOffset: +240, color: 'gray', id: 'g' },
-            { type: 'person', timezoneOffset: 0, color: 'green', id: 'UTCBoy' }
-          ]}
+            id: u.name
+          }))}
+
+          //   [
+          //   { type: 'person', timezoneOffset: +60, color: 'red', id: 'b' },
+          //   { type: 'person', timezoneOffset: +60, color: 'orange', id: 'c' },
+          //   { type: 'person', timezoneOffset: +60, color: 'pink', id: 'd' },
+          //   { type: 'person', timezoneOffset: -120, color: 'gray', id: 'e' },
+          //   { type: 'person', timezoneOffset: +240, color: 'gray', id: 'g' },
+          //   { type: 'person', timezoneOffset: 0, color: 'green', id: 'UTCBoy' }
+          // ]}
         />
       </div>
 

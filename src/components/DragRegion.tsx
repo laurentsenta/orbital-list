@@ -116,7 +116,6 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
       style={{
         width: '100%',
         height: '100%',
-        backgroundColor: 'rgba(140, 0, 0, 0.2)',
         position: 'absolute',
         left: 0,
         top: 0,

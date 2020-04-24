@@ -4,10 +4,12 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
+    "moment": "^2.24.0",
+    "moment-timezone": "^0.5.28",
+    "orbital-list": "link:..",
     "react": "link:../node_modules/react",
     "react-dom": "link:../node_modules/react-dom",
-    "react-scripts": "link:../node_modules/react-scripts",
-    "orbital-list": "link:.."
+    "react-scripts": "link:../node_modules/react-scripts"
   },
   "scripts": {
     "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",

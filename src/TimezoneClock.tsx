@@ -43,22 +43,34 @@ const TimezoneClock = (props: IProps) => {
   time.setMinutes(time.getMinutes() + delta)
 
   const items = augmentItems(time, props.items)
-  const activeHours = new Set(items.map((x) => x.hour))
+
+  const itemsHours = items.map((x) => x.hour)
+
+  const activeItemHours = new Set([...itemsHours])
+  const activeTickHours = new Set([
+    ...itemsHours,
+    0,
+    6,
+    12,
+    18,
+    time.getHours()
+  ])
 
   const maxLayer = Math.max(...items.map((x) => x.layer))
   const layerCoeficient = maxLayer === 0 ? 1 : 1 / maxLayer
 
-  const LAYER_MIN = 0.2
-  const LAYER_MAX = 0.7
+  const LAYER_MIN = 0.33
+  const LAYER_MAX = 0.75
   const LAYER_RANGE = LAYER_MAX - LAYER_MIN
 
   const distance = (layer: number): number =>
-    LAYER_MIN + layer * layerCoeficient * LAYER_RANGE
+    LAYER_MAX - layer * layerCoeficient * LAYER_RANGE
 
   return (
     <OrbitalList>
       <BackgroundAndHands
-        activeHours={activeHours}
+        activeItemHours={activeItemHours}
+        activeTickHours={activeTickHours}
         hours={time.getHours()}
         minutes={time.getMinutes()}
         seconds={time.getSeconds()}
