@@ -12,7 +12,7 @@ export interface Item {
   color: string
   id: string
   style?: CSSProperties
-  children: any
+  children?: any
 }
 
 export interface AugmentedItem extends Item {

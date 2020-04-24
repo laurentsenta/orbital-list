@@ -14,7 +14,7 @@ import 'orbital-list/dist/index.css'
 import React from 'react'
 import USERS from './users'
 
-const now = new Date()
+const now = new Date().getTime()
 const cityToOffset = (city) => tz.zone(city).utcOffset(now)
 
 const App = () => {
@@ -24,7 +24,6 @@ const App = () => {
       <div style={{ width: '100%', height: '80vh' }}>
         <TimezoneClock
           items={USERS.map((u) => ({
-            type: 'person',
             timezoneOffset: cityToOffset(u.city),
             color: 'white',
             style: {
