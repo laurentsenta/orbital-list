@@ -1,5 +1,4 @@
-import { OrbitalList } from '.'
-import { TimezoneClock } from '.'
+import { OrbitalList, TimezoneClock } from '.'
 
 describe('OrbitalList', () => {
   it('is truthy', () => {

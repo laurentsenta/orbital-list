@@ -1,12 +1,28 @@
 import {
-  useRef,
-  useState,
   useCallback,
-  useEffect
+  useEffect,
   //  useLayoutEffect
+  useRef,
+  useState
 } from 'react'
 
 const pow = Math.pow
+
+// https://stackoverflow.com/a/10050831/843194
+export function range(size: number, startAt: number = 0): number[] {
+  // tslint:disable-next-line:prefer-array-literal
+  return Array.from(Array(size).keys()).map((i: number) => i + startAt)
+}
+
+export const lpad = (n: number, length: number = 2) =>
+  ('' + n).padStart(length, '0')
+
+export function uniq<T>(xs: T[]): T[] {
+  const s = new Set<T>(xs)
+  const r: T[] = []
+  s.forEach((x) => r.push(x))
+  return r
+}
 
 export const useDatetime = () => {
   const ref = useRef<NodeJS.Timeout>()
@@ -28,13 +44,6 @@ export const useDatetime = () => {
   }, [])
 
   return datetime
-}
-
-export function uniq<T>(xs: T[]): T[] {
-  const s = new Set<T>(xs)
-  const r: T[] = []
-  s.forEach((x) => r.push(x))
-  return r
 }
 
 export function useEventListener(

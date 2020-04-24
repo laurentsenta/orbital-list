@@ -1,9 +1,9 @@
 import React, {
   createContext,
-  useRef,
-  useState,
+  useCallback,
   useLayoutEffect,
-  useCallback
+  useRef,
+  useState
 } from 'react'
 import { useEventListener } from './utils'
 

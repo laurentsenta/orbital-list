@@ -1,5 +1,5 @@
-import React, { useContext, CSSProperties } from 'react'
-import { orbitalContext } from './OrbitalWrapper'
+import React, { CSSProperties, useContext } from 'react'
+import { orbitalContext } from '../OrbitalWrapper'
 
 interface IProps {
   angle: number

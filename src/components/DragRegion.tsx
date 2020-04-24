@@ -1,6 +1,6 @@
-import React, { useContext, useRef, useState, useCallback } from 'react'
-import { orbitalContext } from './OrbitalWrapper'
-import { useEventListener } from './utils'
+import React, { useCallback, useContext, useRef, useState } from 'react'
+import { orbitalContext } from '../OrbitalWrapper'
+import { useEventListener } from '../utils'
 
 export interface IDragInfo {
   start: {
