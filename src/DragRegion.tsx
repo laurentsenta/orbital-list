@@ -1,10 +1,4 @@
-import React, {
-  useContext,
-  useRef,
-  useState,
-  useCallback,
-  useEffect
-} from 'react'
+import React, { useContext, useRef, useState, useCallback } from 'react'
 import { orbitalContext } from './OrbitalWrapper'
 import { useEventListener } from './utils'
 
@@ -37,15 +31,22 @@ const pullEventInfo = (
   return { x, y }
 }
 
-const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = ({
-  onDrag
-}) => {
+const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
   const context = useContext(orbitalContext)
   const ref = useRef<HTMLDivElement>(null)
 
   if (!context) {
     throw new Error('invalid context')
   }
+
+  // Turn the callbakc into a pipe
+  const onDrag = useCallback(
+    (x: IDragInfo) => {
+      props.onDrag(x)
+      return x
+    },
+    [props.onDrag]
+  )
 
   const [dragInfo, setDragInfo] = useState<IDragInfo>({
     start: null,
@@ -57,52 +58,46 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = ({
     (e: MouseEvent) => {
       e.preventDefault()
       const coords = pullEventInfo(e, ref.current!, context.radius)
-      setDragInfo({
-        start: coords,
-        current: coords,
-        last: null
-      })
+      setDragInfo(
+        onDrag({
+          start: coords,
+          current: coords,
+          last: null
+        })
+      )
     },
-    [setDragInfo, context.radius]
+    [setDragInfo, context.radius, onDrag]
   )
   const onMouseMove = useCallback(
     (e: MouseEvent) => {
       if (dragInfo.start === null) {
         return
       }
-
       e.preventDefault()
-      setDragInfo((before) => ({
-        ...before,
-        current: pullEventInfo(e, ref.current!, context.radius)
-      }))
+      setDragInfo((before) =>
+        onDrag({
+          ...before,
+          current: pullEventInfo(e, ref.current!, context.radius)
+        })
+      )
     },
-    [setDragInfo, dragInfo, context.radius]
+    [setDragInfo, dragInfo, context.radius, onDrag]
   )
   const onMouseUp = useCallback(
     (e: MouseEvent) => {
       e.preventDefault()
 
-      setDragInfo((before) => ({
-        ...before,
-        start: null,
-        current: null,
-        last: pullEventInfo(e, ref.current!, context.radius)
-      }))
+      setDragInfo((before) =>
+        onDrag({
+          ...before,
+          start: null,
+          current: null,
+          last: pullEventInfo(e, ref.current!, context.radius)
+        })
+      )
     },
-    [setDragInfo, context.radius]
+    [setDragInfo, context.radius, onDrag]
   )
-
-  useEffect(() => {
-    if (
-      dragInfo.start !== null ||
-      dragInfo.current ||
-      null ||
-      dragInfo.last !== null
-    ) {
-      onDrag(dragInfo)
-    }
-  }, [dragInfo, onDrag])
 
   useEventListener('mousedown', onMouseDown, ref)
   useEventListener('mouseup', onMouseUp)

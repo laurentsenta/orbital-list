@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useEffect } from 'react'
+import React, { useCallback, useEffect, useState } from 'react'
 import OrbitalList from './OrbitalList'
 import Dial from './Dial'
 import Label from './Label'
@@ -6,7 +6,7 @@ import Planet from './Planet'
 import Hand from './Hand'
 import Slice from './Slice'
 import Orbit from './Orbit'
-import { useDatetime, uniq, toDeg } from './utils'
+import { useDatetime, toDeg, useEasedState } from './utils'
 import DragRegion, { IDragInfo } from './DragRegion'
 
 interface Item {
@@ -19,16 +19,16 @@ interface IProps {
   items: Item[]
 }
 
-const TICKS = [
-  { label: '00', hour: 0 },
-  { label: '03', hour: 3 },
-  { label: '06', hour: 6 },
-  { label: '10', hour: 10 },
-  { label: '12', hour: 12 },
-  { label: '15', hour: 15 },
-  { label: '18', hour: 18 },
-  { label: '21', hour: 21 }
-]
+// https://stackoverflow.com/a/10050831/843194
+export function range(size: number, startAt: number = 0): number[] {
+  // tslint:disable-next-line:prefer-array-literal
+  return Array.from(Array(size).keys()).map((i: number) => i + startAt)
+}
+
+export const lpad = (n: number, length: number = 2) =>
+  ('' + n).padStart(length, '0')
+
+const HOURS = range(24)
 
 const ANGLE_DELTA = 90 // turn so that 12:00 is at the top.
 
@@ -79,80 +79,154 @@ const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
   return withLayer
 }
 
-const useAnimatedState = (
-  s: number
-): [number, (x: number) => void, (x: number) => void] => {
-  const [current, setCurrent] = useState(s)
-  const [target, setTarget] = useState(s)
+const Background: React.FC = () => (
+  <React.Fragment>
+    <Dial className='Dial' radius={1} color='orange' />
+    <Slice
+      angleStart={asAngle(18)}
+      angleEnd={asAngle(6)}
+      color='rgba(0, 0, 255, 1)'
+    />
+    <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.7} />
+    <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.45} />
+    <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.2} />
+  </React.Fragment>
+)
 
-  const reset = useCallback(
-    (x: number) => {
-      setCurrent(x)
-      setTarget(x)
-    },
-    [setCurrent, setTarget]
-  )
+const TimeHand: React.FC<{ hours: number; minutes: number }> = ({
+  hours,
+  minutes
+}) => (
+  <React.Fragment>
+    <Hand angle={asAngle(hours, minutes)} color='red' width={5} length={0.8} />
+    <Hand
+      angle={asAngle(hours, minutes) + 180}
+      color='red'
+      width={5}
+      length={0.15}
+    />
+  </React.Fragment>
+)
 
-  const f = useCallback(() => {
-    if (current > target - 0.1 && current < target + 0.1) {
-      setCurrent(target)
-      return
-    }
+const HoursSlice: React.FC<{ active: Set<number> }> = ({ active }) => (
+  <React.Fragment>
+    {HOURS.map((hour) => (
+      <Slice
+        key={hour}
+        style={{
+          transition: 'background-color 0.6s ease'
+        }}
+        angleStart={asAngle(hour) + 0.5}
+        angleEnd={asAngle(hour + 1) - 0.5}
+        color={`rgba(255, 255, 255, ${active.has(hour) ? '0.2' : '0'})`}
+      />
+    ))}
+  </React.Fragment>
+)
 
-    if (current < target) {
-      setCurrent((x) => x + (target - x) / 2)
-    } else if (current > target) {
-      setCurrent((x) => x - (x - target) / 2)
-    }
-  }, [target, current])
+const Ticks: React.FC = () => (
+  <React.Fragment>
+    {HOURS.map((hour) => {
+      return (
+        <React.Fragment>
+          <Label angle={asAngle(hour)} distance={0.9}>
+            {lpad(hour, 2)}
+          </Label>
+          <Hand
+            start={0.95}
+            end={0.99}
+            color='white'
+            angle={asAngle(hour)}
+            width={2}
+          />
+        </React.Fragment>
+      )
+    })}
+  </React.Fragment>
+)
 
-  useEffect(() => {
-    // create callback that updates current until current === target
-    if (target === current) {
-      return
-    }
-    const i = setInterval(f, 10)
-    return () => clearInterval(i)
-  }, [current, target])
+const HandSeconds: React.FC<{ seconds: number }> = ({ seconds }) => (
+  <Hand
+    angle={(seconds / 60) * 360 + ANGLE_DELTA}
+    // TODO: figure out how to use transitions with angle and modulos:
+    // style={{transitionDuration: '0.2s'}}
+    color='white'
+    width={2}
+    length={0.7}
+  />
+)
 
-  return [current, setTarget, reset]
-}
+const BackgroundAndHands: React.FC<{
+  activeHours: Set<number>
+  hours: number
+  minutes: number
+  seconds: number
+}> = ({ activeHours, hours, minutes, seconds }) => (
+  <React.Fragment>
+    <Background />
+    <HoursSlice active={activeHours} />
+    <Ticks />
+    <TimeHand hours={hours} minutes={minutes} />
+    <HandSeconds seconds={seconds} />
+    <Dial className='Dial' radius={0.08} color='red' />
+  </React.Fragment>
+)
+
+const Peoples: React.FC<{
+  items: AugmentedItem[]
+  distance: (layer: number) => number
+}> = ({ items, distance }) => (
+  <React.Fragment>
+    {items.map(({ id, color, hour, minute, layer }) => (
+      <Planet
+        key={id}
+        style={{ backgroundColor: color }}
+        angle={asAngle(hour, minute)}
+        radius={0.07}
+        distance={distance(layer)}
+      >
+        {id}
+      </Planet>
+    ))}
+  </React.Fragment>
+)
 
 const TimezoneClock = (props: IProps) => {
   // TODO: deal with element resizings.
   const myTime = useDatetime()
-  const [delta, setDelta, resetDelta] = useAnimatedState(0) // unit is minutes
-  const [seconds, setSeconds] = useAnimatedState(myTime.getSeconds())
+  const [delta, setDelta, resetDelta] = useEasedState(0, 1000, 'easeOutBack') // unit is minutes
+  const [, setSeconds] = useState(myTime.getSeconds())
 
   useEffect(() => {
     setSeconds(myTime.getSeconds())
   }, [myTime.getSeconds()])
 
-  const onDrag = useCallback((i: IDragInfo) => {
-    const { start, current, last } = i
+  const onDrag = useCallback(
+    (i: IDragInfo) => {
+      const { start, current, last } = i
 
-    if (last && !start) {
-      setDelta(0)
-      return
-    }
+      if (last && !start) {
+        setDelta(0)
+        return
+      }
 
-    if (!start || !current) {
-      return
-    }
+      if (!start || !current) {
+        return
+      }
 
-    const startAngle = Math.atan2(start.y, start.x)
-    const currentAngle = Math.atan2(current.y, current.x)
+      const startAngle = Math.atan2(start.y, start.x)
+      const currentAngle = Math.atan2(current.y, current.x)
 
-    resetDelta((toDeg(currentAngle - startAngle) / 360) * 24 * 60)
-  }, [])
+      resetDelta((toDeg(currentAngle - startAngle) / 360) * 24 * 60)
+    },
+    [setDelta, resetDelta]
+  )
 
   const time = new Date(myTime)
   time.setMinutes(time.getMinutes() + delta)
 
-  const angleSeconds = (seconds / 60) * 360
-
   const items = augmentItems(time, props.items)
-  const activeHours: number[] = uniq(items.map((x) => x.hour))
+  const activeHours = new Set(items.map((x) => x.hour))
 
   const maxLayer = Math.max(...items.map((x) => x.layer))
   const layerCoeficient = maxLayer === 0 ? 1 : 1 / maxLayer
@@ -166,74 +240,14 @@ const TimezoneClock = (props: IProps) => {
 
   return (
     <OrbitalList>
-      <Dial className='Dial' radius={1} color='orange' />
-      <Slice
-        angleStart={asAngle(18)}
-        angleEnd={asAngle(6)}
-        color='rgba(0, 0, 255, 1)'
+      <BackgroundAndHands
+        activeHours={activeHours}
+        hours={time.getHours()}
+        minutes={time.getMinutes()}
+        seconds={time.getSeconds()}
       />
-      {activeHours.map((hour) => (
-        <Slice
-          key={hour}
-          angleStart={asAngle(hour) + 0.5}
-          angleEnd={asAngle(hour + 1) - 0.5}
-          color='rgba(255, 255, 255, 0.1)'
-        />
-      ))}
-      {TICKS.map(({ label, hour }) => {
-        return (
-          <React.Fragment>
-            <Label angle={asAngle(hour)} distance={0.9}>
-              {label}
-            </Label>
-            <Hand
-              start={0.95}
-              end={0.99}
-              color='white'
-              angle={asAngle(hour)}
-              width={2}
-            />
-          </React.Fragment>
-        )
-      })}
-      <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.7} />
-      <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.45} />
-      <Orbit color='rgba(255, 255, 255, 0.2)' width={2} radius={0.2} />
-      <Hand
-        angle={asAngle(time.getHours(), time.getMinutes())}
-        color='red'
-        width={5}
-        length={0.8}
-      />
-      <Hand
-        angle={asAngle(time.getHours(), time.getMinutes()) + 180}
-        color='red'
-        width={5}
-        length={0.15}
-      />
-      <Hand
-        angle={angleSeconds + ANGLE_DELTA}
-        // TODO: figure out how to use transitions with angle and modulos:
-        // style={{transitionDuration: '0.2s'}}
-        color='white'
-        width={2}
-        length={0.7}
-      />
-      <Dial className='Dial' radius={0.08} color='red' />
       <DragRegion onDrag={onDrag} />
-      {items.map(({ id, color, hour, minute, layer }) => {
-        return (
-          <Planet
-            key={id}
-            style={{ backgroundColor: color }}
-            angle={asAngle(hour, minute)}
-            radius={0.07}
-            distance={distance(layer)}
-          >
-            {id}
-          </Planet>
-        )
-      })}
+      <Peoples items={items} distance={distance} />
     </OrbitalList>
   )
 }
