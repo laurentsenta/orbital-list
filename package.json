@@ -1,10 +1,10 @@
 {
   "name": "orbital-list",
-  "version": "1.0.0",
-  "description": "TODO",
+  "version": "0.1.0",
+  "description": "A React library to display data using circles, orbits, and planets.",
   "author": "lsenta",
   "license": "MIT",
-  "repository": "singulargarden/orbital-list",
+  "repository": "lsenta/orbital-list",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
