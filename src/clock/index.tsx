@@ -119,7 +119,7 @@ const Ticks: React.FC<{ active: Set<number> }> = ({ active }) => (
       const opacity = active.has(hour) ? '0.9' : '0.1'
       const color = `rgba(255, 255, 255, ${opacity})`
       return (
-        <React.Fragment>
+        <React.Fragment key={hour}>
           <Label
             angle={asAngle(hour)}
             distance={0.9}
@@ -185,7 +185,7 @@ export const Peoples: React.FC<{
         radius={0.09}
         distance={distance(layer)}
       >
-        {children ? children : null}
+        {children}
       </Planet>
     ))}
   </React.Fragment>

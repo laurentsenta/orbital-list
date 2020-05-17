@@ -73,6 +73,7 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
       if (dragInfo.start === null) {
         return
       }
+
       e.preventDefault()
       setDragInfo((before) =>
         onDrag({
@@ -85,6 +86,10 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
   )
   const onMouseUp = useCallback(
     (e: MouseEvent) => {
+      if (dragInfo.start === null || dragInfo.current === null) {
+        return
+      }
+
       e.preventDefault()
 
       setDragInfo((before) =>
