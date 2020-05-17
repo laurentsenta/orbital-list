@@ -25,6 +25,18 @@ class Example extends Component {
 }
 ```
 
+## Develop
+
+```
+yarn start # start working on the library
+```
+
+Go in the `examples/` folder, there is a react app there,
+
+```
+yarn start # start the example server
+```
+
 ## License
 
 MIT © [lsenta](https://github.com/lsenta)
