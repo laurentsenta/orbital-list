@@ -7,6 +7,7 @@ interface IProps {
   color?: string
   radius?: number
 }
+
 const Dial: React.FC<IProps> = ({ style, className, color, radius }) => {
   const p = {
     ...(style ? { style } : {}),

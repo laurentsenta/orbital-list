@@ -28,10 +28,9 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
     const height = ref.current.offsetHeight
     const squareSize = Math.min(width, height)
     setSize({ width, height, squareSize })
-  }, [ref])
+  }, [ref, ref.current, setSize])
 
-  useLayoutEffect(onResize, [ref])
-
+  useLayoutEffect(onResize, [onResize])
   useEventListener('resize', onResize)
 
   const squareSize = size.squareSize
@@ -54,7 +53,8 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
           width: `${size.squareSize}px`,
           height: `${size.squareSize}px`,
           margin: 'auto',
-          position: 'relative'
+          position: 'relative',
+          overflow: 'hidden'
         }}
       >
         <div
