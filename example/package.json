@@ -7,8 +7,8 @@
     "moment": "^2.24.0",
     "moment-timezone": "^0.5.28",
     "orbital-list": "link:..",
-    "react": "link:../node_modules/react",
-    "react-dom": "link:../node_modules/react-dom",
+    "react": "16.13",
+    "react-dom": "16.13",
     "react-scripts": "link:../node_modules/react-scripts"
   },
   "scripts": {
