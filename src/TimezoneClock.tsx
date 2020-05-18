@@ -9,11 +9,11 @@ interface IProps {
 }
 
 const TimezoneClock = (props: IProps) => {
-  // TODO: deal with element resizings.
   const myTime = useDatetime()
   const [delta, setDelta, resetDelta] = useEasedState(0, 1000, 'easeOutBack') // unit is minutes
   const [, setSeconds] = useState(myTime.getSeconds())
 
+  // TODO: We recompute all the data for this component on every second -> move the second ticker out of this component.
   useEffect(() => {
     setSeconds(myTime.getSeconds())
   }, [myTime.getSeconds()])

@@ -31,7 +31,11 @@ export const asAngle = (hours: number, minutes: number = 0) => {
 export const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
   const withHoursAndMinutes = items.map((item) => {
     const minutes =
-      time.getUTCHours() * 60 - item.timezoneOffset + time.getUTCMinutes()
+      time.getUTCHours() * 60 +
+      time.getUTCMinutes() -
+      item.timezoneOffset +
+      24 * 60 // Make sure the value is always > 0 which prevents tricky deltas, modulos, etc.
+
     return {
       ...item,
       hour: Math.floor(minutes / 60) % 24,
@@ -42,6 +46,7 @@ export const augmentItems = (time: Date, items: Item[]): AugmentedItem[] => {
   /*
    * set a layer for every item,
    * prevent collisions / items to close to each other.
+   * TODO: when we rotate, the order might change and the items jump between layer -> fix.
    */
   const layerUsed = {}
 
