@@ -1,6 +1,6 @@
 {
   "name": "orbital-list",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A React library to display data using circles, orbits, and planets.",
   "author": "lsenta",
   "license": "MIT",
