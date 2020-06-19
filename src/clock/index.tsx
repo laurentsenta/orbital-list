@@ -136,7 +136,7 @@ const Ticks: React.FC<{ active: Set<number> }> = ({ active }) => (
         <React.Fragment key={hour}>
           <Label
             angle={asAngle(hour)}
-            distance={0.9}
+            distance={0.89}
             color={color}
             style={{ fontSize, fontWeight: 'bold' }}
           >
