@@ -7,6 +7,8 @@ import Planet from '../components/Planet'
 import Slice from '../components/Slice'
 import { lpad, range } from '../utils'
 
+const BIG_HOURS = new Set([0, 6, 12, 18])
+
 export interface Item {
   timezoneOffset: number
   color: string
@@ -121,15 +123,22 @@ const HoursSlice: React.FC<{
 const Ticks: React.FC<{ active: Set<number> }> = ({ active }) => (
   <React.Fragment>
     {HOURS.map((hour) => {
-      const opacity = active.has(hour) ? '0.9' : '0.1'
+      const opacity = BIG_HOURS.has(hour)
+        ? '1'
+        : active.has(hour)
+        ? '0.7'
+        : '0.1'
+      const fontSize = BIG_HOURS.has(hour) ? '1.8rem' : '1.2rem'
       const color = `rgba(255, 255, 255, ${opacity})`
+      // const color = `rgba(255, 255, 255, ${opacity})`
+
       return (
         <React.Fragment key={hour}>
           <Label
             angle={asAngle(hour)}
             distance={0.9}
             color={color}
-            style={{ fontSize: '1.2rem', fontWeight: 'bold' }}
+            style={{ fontSize, fontWeight: 'bold' }}
           >
             {lpad(hour, 2)}
           </Label>
