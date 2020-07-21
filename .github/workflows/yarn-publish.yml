@@ -4,10 +4,10 @@
 name: Publish OrbitalList package
 
 on:
-#   release:
-#     types: [created]
+  #   release:
+  #     types: [created]
   push:
-    branches: 
+    branches:
       - master
 
 jobs:
@@ -20,7 +20,7 @@ jobs:
           node-version: 12
       - run: yarn
       - run: yarn test
-        
+
   test:
     needs: setup
     runs-on: ubuntu-latest
@@ -52,15 +52,15 @@ jobs:
         with:
           node-version: 12
           registry-url: https://registry.npmjs.org/
-      - run: npm ci
-      - run: npm publish
+      - run: yarn install
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.NPM_TOKEN}}
 
   publish-gpr:
     needs:
       - build
-      - test   
+      - test
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -68,7 +68,26 @@ jobs:
         with:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
-      - run: npm ci
-      - run: npm publish
+      - run: yarn install
+      - run: yarn publish
         env:
           NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+
+  publish-github-page:
+    needs:
+      - publish-npm
+      - publish-gpr
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v1
+        with:
+          node-version: 12
+          registry-url: https://npm.pkg.github.com/
+      - run: yarn install
+      - run: yarn predeploy
+      - name: Deploy to pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./example/build
