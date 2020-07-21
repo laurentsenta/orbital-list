@@ -26,7 +26,7 @@ export interface AugmentedItem extends Item {
 export const HOURS = range(24)
 export const ANGLE_DELTA = 90 // turn so that 12:00 is at the top.
 
-export const asAngle = (hours: number, minutes: number = 0) => {
+export const asAngle = (hours: number, minutes = 0) => {
   return (hours / 24) * 360 + (minutes / 60) * (360 / 24) + ANGLE_DELTA
 }
 
