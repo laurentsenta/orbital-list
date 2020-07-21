@@ -104,12 +104,18 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
     [setDragInfo, context.radius, onDrag]
   )
 
+  // @ts-ignore
   useEventListener('mousedown', onMouseDown, ref)
+  // @ts-ignore
   useEventListener('mouseup', onMouseUp)
+  // @ts-ignore
   useEventListener('mousemove', onMouseMove)
 
+  // @ts-ignore
   useEventListener('touchstart', onMouseDown, ref)
+  // @ts-ignore
   useEventListener('touchend', onMouseUp)
+  // @ts-ignore
   useEventListener('touchmove', onMouseMove)
 
   if (!context) {
