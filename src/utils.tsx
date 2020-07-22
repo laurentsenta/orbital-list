@@ -3,7 +3,8 @@ import {
   useEffect,
   //  useLayoutEffect
   useRef,
-  useState
+  useState,
+  useLayoutEffect
 } from 'react'
 
 const pow = Math.pow
@@ -40,6 +41,10 @@ export const useDatetime = () => {
       ref.current = ticker()
     }
     return () => clearInterval(ref.current!)
+  }, [])
+
+  useLayoutEffect(() => {
+    setDatetime(new Date())
   }, [])
 
   return datetime
@@ -95,6 +100,17 @@ const easing: { [key: string]: (n: number) => number } = {
     const c3 = c1 + 1
 
     return 1 + c3 * pow(n - 1, 3) + c1 * pow(n - 1, 2)
+  },
+  easeInOutBack: (x: number): number => {
+    const c1 = 1.70158
+    const c2 = c1 * 1.525
+
+    return x < 0.5
+      ? (pow(2 * x, 2) * ((c2 + 1) * 2 * x - c2)) / 2
+      : (pow(2 * x - 2, 2) * ((c2 + 1) * (x * 2 - 2) + c2) + 2) / 2
+  },
+  easeInOutQuart: (x: number): number => {
+    return x < 0.5 ? 8 * x * x * x * x : 1 - pow(-2 * x + 2, 4) / 2
   }
 }
 

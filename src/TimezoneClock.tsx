@@ -10,8 +10,16 @@ interface IProps {
 
 const TimezoneClock = (props: IProps) => {
   const myTime = useDatetime()
-  const [delta, setDelta, resetDelta] = useEasedState(0, 1000, 'easeOutBack') // unit is minutes
+  const [delta, setDelta, resetDelta] = useEasedState(
+    -80,
+    1000,
+    'easeInOutQuart'
+  ) // unit is minutes
   const [, setSeconds] = useState(myTime.getSeconds())
+
+  useEffect(() => {
+    setDelta(0)
+  }, [])
 
   // TODO: We recompute all the data for this component on every second -> move the second ticker out of this component.
   useEffect(() => {
@@ -41,8 +49,6 @@ const TimezoneClock = (props: IProps) => {
 
   const time = new Date(myTime)
   time.setMinutes(time.getMinutes() + delta)
-
-  console.log('times:', myTime, time)
 
   const items = augmentItems(time, props.items)
 
