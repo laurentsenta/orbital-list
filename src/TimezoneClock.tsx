@@ -42,6 +42,8 @@ const TimezoneClock = (props: IProps) => {
   const time = new Date(myTime)
   time.setMinutes(time.getMinutes() + delta)
 
+  console.log(myTime, time)
+
   const items = augmentItems(time, props.items)
 
   const itemsHours = items.map((x) => x.hour)
