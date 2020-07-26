@@ -1,4 +1,4 @@
-import React, { CSSProperties, useContext } from 'react'
+import React, { CSSProperties, useContext, useCallback } from 'react'
 import { orbitalContext } from '../OrbitalWrapper'
 
 interface IProps {
@@ -6,6 +6,8 @@ interface IProps {
   angle: number
   distance?: number
   className?: string
+  onHover?: (hover: boolean) => any
+  onClick?: React.MouseEventHandler
 }
 
 const Place: React.FC<IProps> = ({
@@ -13,7 +15,9 @@ const Place: React.FC<IProps> = ({
   children,
   distance,
   style,
-  className
+  className,
+  onHover,
+  onClick
 }) => {
   const context = useContext(orbitalContext)
 
@@ -30,9 +34,23 @@ const Place: React.FC<IProps> = ({
 
   const params = className ? { className } : {}
 
+  const onEnter = useCallback(() => {
+    if (onHover) {
+      onHover(true)
+    }
+  }, [onHover])
+
+  const onLeave = useCallback(() => {
+    if (onHover) {
+      onHover(false)
+    }
+  }, [onHover])
+
   return (
     <div
       {...params}
+      onMouseEnter={onEnter}
+      onMouseLeave={onLeave}
       style={{
         ...style,
         position: 'absolute',
@@ -40,6 +58,7 @@ const Place: React.FC<IProps> = ({
         top: y,
         transform: 'translate(-50%, -50%)'
       }}
+      onClick={onClick}
     >
       {children}
     </div>

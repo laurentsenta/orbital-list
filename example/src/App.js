@@ -11,7 +11,7 @@ import {
   TimezoneClock
 } from 'orbital-list'
 import 'orbital-list/dist/index.css'
-import React from 'react'
+import React, { useState } from 'react'
 import USERS from './users'
 
 const now = new Date().getTime()
@@ -29,22 +29,36 @@ const App = () => {
   )
 }
 
-const ClockDemo = () => (
-  <div style={{ width: '100%', height: '80vh' }}>
-    <TimezoneClock
-      items={USERS.map((u) => ({
-        timezoneOffset: cityToOffset(u.city),
-        color: 'white',
-        style: {
-          backgroundImage: `url(${u.img})`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center center'
-        },
-        id: u.name
-      }))}
-    />
-  </div>
-)
+const ClockDemo = () => {
+  const [hover, setIsHover] = useState(null)
+
+  return (
+    <div style={{ width: '100%', height: '80vh' }}>
+      <TimezoneClock
+        items={USERS.map((u) => ({
+          timezoneOffset: cityToOffset(u.city),
+          color: 'white',
+          onHover: (x) => {
+            if (x) {
+              setIsHover(u._id)
+            } else {
+              setIsHover(null)
+            }
+          },
+          style: {
+            backgroundImage: `url(${u.img})`,
+            backgroundSize: 'cover',
+            backgroundPosition: 'center center',
+            borderWidth: hover === u._id ? '2px' : '1px',
+            borderStyle: 'solid',
+            borderColor: '#FFF'
+          },
+          id: u.name
+        }))}
+      />
+    </div>
+  )
+}
 
 const OListDemo = () => (
   <div style={{ width: '100%', height: '80vh' }}>

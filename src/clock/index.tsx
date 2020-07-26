@@ -15,6 +15,8 @@ export interface Item {
   id: string
   style?: CSSProperties
   children?: any
+  onHover?: (hover: boolean) => any
+  onClick?: React.MouseEventHandler
 }
 
 export interface AugmentedItem extends Item {
@@ -191,16 +193,30 @@ export const Peoples: React.FC<{
   distance: (layer: number) => number
 }> = ({ items, distance }) => (
   <React.Fragment>
-    {items.map(({ id, color, hour, minute, layer, style, children }) => (
-      <Planet
-        key={id}
-        style={{ backgroundColor: color, ...style }}
-        angle={asAngle(hour, minute)}
-        radius={0.09}
-        distance={distance(layer)}
-      >
-        {children}
-      </Planet>
-    ))}
+    {items.map(
+      ({
+        id,
+        color,
+        hour,
+        minute,
+        layer,
+        style,
+        children,
+        onHover,
+        onClick
+      }) => (
+        <Planet
+          onHover={onHover}
+          onClick={onClick}
+          key={id}
+          style={{ backgroundColor: color, ...style }}
+          angle={asAngle(hour, minute)}
+          radius={0.09}
+          distance={distance(layer)}
+        >
+          {children}
+        </Planet>
+      )
+    )}
   </React.Fragment>
 )

@@ -9,10 +9,21 @@ interface IProps {
   color?: string
   style?: CSSProperties
   className?: string
+  onHover?: (hover: boolean) => any
+  onClick?: React.MouseEventHandler
 }
 
 const Planet: React.FC<IProps> = (props) => {
-  const { angle, children, distance, radius, color, className } = props
+  const {
+    angle,
+    children,
+    distance,
+    radius,
+    color,
+    className,
+    onHover,
+    onClick
+  } = props
   const context = useContext(orbitalContext)
 
   if (!context) {
@@ -32,7 +43,14 @@ const Planet: React.FC<IProps> = (props) => {
   const params = className ? { className } : {}
 
   return (
-    <Place {...params} angle={angle} distance={distance || 0} style={style}>
+    <Place
+      {...params}
+      angle={angle}
+      distance={distance || 0}
+      style={style}
+      onHover={onHover}
+      onClick={onClick}
+    >
       {children}
     </Place>
   )
