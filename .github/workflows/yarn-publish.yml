@@ -11,18 +11,7 @@ on:
       - master
 
 jobs:
-  setup:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: actions/setup-node@v1
-        with:
-          node-version: 12
-      - run: yarn install
-      - run: yarn test
-
-  build:
-    needs: setup
+  test-and-build:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -31,10 +20,11 @@ jobs:
           node-version: 12
       - run: yarn
       - run: yarn test
+      - run: yarn build
 
   publish-npm:
     needs:
-      - build
+      - test-and-build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -49,7 +39,7 @@ jobs:
 
   publish-github-page:
     needs:
-      - build
+      - publish-npm
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
