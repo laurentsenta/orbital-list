@@ -1,10 +1,12 @@
+![logo](./social.png?raw=true 'orbital-list logo')
+
 # orbital-list
 
 A React library to display data using circles, orbits, and planets.
 
 [![NPM](https://img.shields.io/npm/v/orbital-list.svg)](https://www.npmjs.com/package/orbital-list) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
-![capture orbital-list](example/capture.png?raw=true 'orbital-list Example')
+![capture orbital-list](./capture.png?raw=true 'orbital-list Example')
 
 Visit [laurentsenta.com/orbital-list](http://www.laurentsenta.com/orbital-list/) for an interactive example.
 
