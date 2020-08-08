@@ -49,7 +49,7 @@ jobs:
 
   publish-github-page:
     needs:
-      - publish-npm
+      - build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
