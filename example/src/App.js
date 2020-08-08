@@ -10,7 +10,6 @@ import {
   Slice,
   TimezoneClock
 } from 'orbital-list'
-import 'orbital-list/dist/index.css'
 import React, { useState } from 'react'
 import USERS from './users'
 

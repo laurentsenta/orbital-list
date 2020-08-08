@@ -1,10 +1,10 @@
 {
   "name": "orbital-list",
-  "version": "0.1.8",
+  "version": "0.1.9-rc.4",
   "description": "A React library to display data using circles, orbits, and planets.",
   "author": "lsenta",
   "license": "MIT",
-  "repository": "lsenta/orbital-list",
+  "repository": "laurentsenta/orbital-list",
   "main": "dist/index.js",
   "module": "dist/index.modern.js",
   "source": "src/index.tsx",
@@ -20,7 +20,7 @@
     "test:lint": "echo SKIPPED: eslint .",
     "test:unit": "cross-env CI=1 react-scripts test --env=jsdom",
     "test:watch": "react-scripts test --env=jsdom",
-    "predeploy": "cd example && yarn install && yarn run build",
+    "predeploy": "cd example && yarn install && rm -rf ../node_modules/react ../node_modules/react-dom && yarn run build",
     "deploy": "gh-pages -d example/build"
   },
   "peerDependencies": {

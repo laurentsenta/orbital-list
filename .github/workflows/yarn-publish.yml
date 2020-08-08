@@ -48,6 +48,7 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
       - run: yarn install
+      - run: yarn build
       - run: yarn predeploy
       - name: Deploy to pages
         uses: peaceiris/actions-gh-pages@v3
