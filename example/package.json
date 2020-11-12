@@ -4,12 +4,12 @@
   "version": "0.0.0",
   "private": true,
   "dependencies": {
-    "moment": "^2.24.0",
-    "moment-timezone": "^0.5.28",
-    "orbital-list": "link:..",
-    "react": "16.13",
-    "react-dom": "16.13",
-    "react-scripts": "link:../node_modules/react-scripts"
+    "moment": "^2.29.1",
+    "moment-timezone": "^0.5.31",
+    "orbital-list": "file:..",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-scripts": "file:../node_modules/react-scripts"
   },
   "scripts": {
     "start": "node ../node_modules/react-scripts/bin/react-scripts.js start",
