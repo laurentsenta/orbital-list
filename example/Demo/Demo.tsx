@@ -25,7 +25,7 @@ export enum Components {
 
 export const Demo: React.FC<{ active: Components }> = ({ active }) => {
   const currentTimeDelta = useCallback(() => {
-    return Math.round((Date.now() / 1000) % 360)
+    return (Date.now() / 1000)
   }, [])
 
   const [timeDelta, setTimeDelta] = useState(currentTimeDelta())
@@ -33,7 +33,7 @@ export const Demo: React.FC<{ active: Components }> = ({ active }) => {
   useEffect(() => {
     const interval = setInterval(() => {
       setTimeDelta(currentTimeDelta())
-    }, 300)
+    }, 20)
     return () => clearInterval(interval)
   }, [setTimeDelta])
 
@@ -46,7 +46,7 @@ export const Demo: React.FC<{ active: Components }> = ({ active }) => {
         {match(Components.Slice) ? <Slices /> : null}
         {match(Components.Orbit) ? <Orbits /> : null}
         {match(Components.Place) ? <Places /> : null}
-        {match(Components.Planet) ? <Planets /> : null}
+        {match(Components.Planet) ? <Planets timeDelta={timeDelta} /> : null}
         {match(Components.Hand1) ? <Hands1 /> : null}
         {match(Components.Hand2) ? <Hands2 /> : null}
         {match(Components.Label) ? <Labels timeDelta={timeDelta} /> : null}

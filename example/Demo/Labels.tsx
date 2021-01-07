@@ -16,7 +16,7 @@ export const Labels: React.FC<{ timeDelta: number }> = ({ timeDelta }) => (
         {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
             <Label
                 key={`label-${x}`}
-                angle={timeDelta + x * 5}
+                angle={(timeDelta * 2) + x * 5}
                 distance={0.7}
                 style={{
                     color: 'white',

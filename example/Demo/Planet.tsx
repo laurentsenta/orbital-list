@@ -1,4 +1,5 @@
 import React from 'react';
+import React = require('react');
 import { Planet } from "../../.";
 
 export const PlanetsDoc: React.FC = () => (
@@ -10,7 +11,7 @@ export const PlanetsDoc: React.FC = () => (
     </>
 )
 
-export const Planets = () => (
+export const Planets: React.FC<{ timeDelta: number }> = ({ timeDelta }) => (
     <>
         {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((x) => (
             <Planet

@@ -27,10 +27,6 @@ const App = () => {
           <Demo active={active} />
         </div>
       </div>
-      <p className="has-text-centered my-5">
-        <a target='_blank' href="http://whena.re/"><span role="img" aria-label="planet">🌎</span> Check whena.re for a live demo.</a>
-      </p>
-
       <div className="box">
         <div className="tabs is-centered is-toggle">
           <ul>
