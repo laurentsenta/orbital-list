@@ -12,8 +12,45 @@
 </head>
 
 <body>
-  <div id="root"></div>
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a class="navbar-item">
+        orbital-list
+      </a>
+    </div>
+
+    <div class="navbar-menu">
+      <div class="navbar-end">
+        <a class="navbar-item" href="https://github.com/laurentsenta/orbital-list">
+          Github
+        </a>
+
+        <a class="navbar-item" href="https://www.singulargarden.com">
+          SingularGarden
+        </a>
+      </div>
+    </div>
+  </nav>
+  <main class="container">
+    <div class="columns is-centered">
+      <div class="column is-6 has-text-centered">
+        <img class="mb-4 align-center" style="max-width: 600px;"
+          src="https://raw.githubusercontent.com/laurentsenta/orbital-list/master/social.png" />
+      </div>
+    </div>
+    <div id="root"></div>
+  </main>
   <script src="./index.tsx"></script>
+  <footer class="footer mt-5">
+    <div class="content has-text-centered">
+      <p>
+        <strong>orbital-list</strong> by <a href="https://singulargarden.com">Laurent Senta</a>. The source code is
+        licensed <a href="http://opensource.org/licenses/mit-license.php">MIT</a>. Find me on <a
+          href="https://twitter.com/laurentsenta">Twitter</a> and <a href="https://github.com/laurentsenta">Github</a>.
+      </p>
+    </div>
+  </footer>
+
 </body>
 
 </html>
