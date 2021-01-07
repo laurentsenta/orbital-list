@@ -70,7 +70,6 @@ export function useEventListener(
     if (!isSupported) {
       throw new Error('event listener not supported')
     }
-
     current.addEventListener(eventName, handler)
 
     return () => {

@@ -39,7 +39,7 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
     throw new Error('invalid context')
   }
 
-  // Turn the callbakc into a pipe
+  // Turn the callback into a pipe
   const onDrag = useCallback(
     (x: IDragInfo) => {
       props.onDrag(x)
@@ -47,6 +47,9 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
     },
     [props.onDrag]
   )
+
+  // TODO: reword how we deal with the current state and side-effects,
+  // this code is faaaaar too naive and unstable.
 
   const [dragInfo, setDragInfo] = useState<IDragInfo>({
     start: null,
@@ -58,6 +61,7 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = (props) => {
     (e: MouseEvent) => {
       e.preventDefault()
       const coords = pullEventInfo(e, ref.current!, context.radius)
+
       setDragInfo(
         onDrag({
           start: coords,
