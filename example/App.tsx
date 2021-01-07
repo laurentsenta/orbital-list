@@ -1,4 +1,4 @@
-import { tz } from 'moment-timezone'
+import React from 'react'
 import {
   Dial,
   Hand,
@@ -9,11 +9,6 @@ import {
   Planet,
   Slice
 } from '../.'
-import React, { useState } from 'react'
-import USERS from './users'
-
-const now = new Date().getTime()
-const cityToOffset = (city) => tz.zone(city).utcOffset(now)
 
 const App = () => {
   return (
@@ -21,37 +16,6 @@ const App = () => {
       <h1>Orbital List</h1>
       <OListDemo />
     </main>
-  )
-}
-
-const ClockDemo = () => {
-  const [hover, setIsHover] = useState(null)
-
-  return (
-    <div style={{ width: '100%', height: '80vh' }}>
-      <TimezoneClock
-        items={USERS.map((u) => ({
-          timezoneOffset: cityToOffset(u.city),
-          color: 'white',
-          onHover: (x) => {
-            if (x) {
-              setIsHover(u._id)
-            } else {
-              setIsHover(null)
-            }
-          },
-          style: {
-            backgroundImage: `url(${u.img})`,
-            backgroundSize: 'cover',
-            backgroundPosition: 'center center',
-            borderWidth: hover === u._id ? '2px' : '1px',
-            borderStyle: 'solid',
-            borderColor: '#FFF'
-          },
-          id: u.name
-        }))}
-      />
-    </div>
   )
 }
 
