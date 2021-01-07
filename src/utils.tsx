@@ -37,6 +37,7 @@ export const useDatetime = () => {
 
   useEffect(() => {
     if (!ref.current) {
+      // @ts-ignore "Type 'number' is not assignable to type 'Timeout | undefined'." despite the correct types everywhere.
       ref.current = ticker()
     }
     return () => clearInterval(ref.current!)
