@@ -1,10 +1,10 @@
-export { default as Dial } from './components/Dial'
-export { default as DragRegion, IDragInfo } from './components/DragRegion'
-export { default as Hand } from './components/Hand'
-export { default as Label } from './components/Label'
-export { default as Orbit } from './components/Orbit'
-export { default as Place } from './components/Place'
-export { default as Planet } from './components/Planet'
-export { default as Slice } from './components/Slice'
-export { default as OrbitalList } from './OrbitalList'
-export * from './utils'
+export { default as Dial } from './components/Dial';
+export { default as DragRegion, IDragInfo } from './components/DragRegion';
+export { default as Hand } from './components/Hand';
+export { default as Label } from './components/Label';
+export { default as Orbit } from './components/Orbit';
+export { default as Place } from './components/Place';
+export { default as Planet } from './components/Planet';
+export { default as Slice } from './components/Slice';
+export { default as OrbitalList } from './OrbitalList';
+export * from './utils';

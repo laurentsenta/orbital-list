@@ -1,43 +1,42 @@
-import React, { CSSProperties, useContext } from 'react'
-import { orbitalContext } from '../OrbitalWrapper'
+import React, { CSSProperties, useContext } from 'react';
+import { orbitalContext } from '../OrbitalWrapper';
 
 interface IProps {
-  angle: number
-  color?: string
-  className?: string
-  style?: CSSProperties
-  width?: number
+  angle: number;
+  color?: string;
+  className?: string;
+  style?: CSSProperties;
+  width?: number;
 
   // TODO: this is a union type, implement a more precise type
   // you should use something like (start?, end?) | (length?)
-  start?: number
-  end?: number
-  length?: number
+  start?: number;
+  end?: number;
+  length?: number;
 }
 
-const Hand: React.FC<IProps> = (props) => {
-  const context = useContext(orbitalContext)
+const Hand: React.FC<IProps> = props => {
+  const context = useContext(orbitalContext);
 
   if (!context) {
-    // TODO: handle this
-    throw 'invalid context'
+    throw new Error('invalid context');
   }
 
-  const { angle, children, color, width } = props
-  const { radius } = context
+  const { angle, children, color, width } = props;
+  const { radius } = context;
 
-  let actualLength = 1
-  let baseDistance = 0
+  let actualLength = 1;
+  let baseDistance = 0;
 
   if (props.start !== undefined || props.end !== undefined) {
-    const start = props.start || 0
-    const end = props.end || 1
-    actualLength = radius * (end - start)
-    baseDistance = radius * start
+    const start = props.start || 0;
+    const end = props.end || 1;
+    actualLength = radius * (end - start);
+    baseDistance = radius * start;
   } else {
-    const length = props.length || 1
-    actualLength = radius * length
-    baseDistance = 0
+    const length = props.length || 1;
+    actualLength = radius * length;
+    baseDistance = 0;
   }
 
   const style: CSSProperties = {
@@ -49,19 +48,19 @@ const Hand: React.FC<IProps> = (props) => {
     left: 0,
     top: 0,
     width: actualLength,
-    height: width || 1
-  }
+    height: width || 1,
+  };
 
   return (
     <div
       className={`${props.className || ''} Hand`}
       style={{
-        ...style
+        ...style,
       }}
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Hand
+export default Hand;

@@ -1,13 +1,13 @@
-import React, { CSSProperties, useContext, useCallback } from 'react'
-import { orbitalContext } from '../OrbitalWrapper'
+import React, { CSSProperties, useContext, useCallback } from 'react';
+import { orbitalContext } from '../OrbitalWrapper';
 
 interface IProps {
-  style?: CSSProperties
-  angle: number
-  distance?: number
-  className?: string
-  onHover?: (hover: boolean) => any
-  onClick?: React.MouseEventHandler
+  style?: CSSProperties;
+  angle: number;
+  distance?: number;
+  className?: string;
+  onHover?: (hover: boolean) => any;
+  onClick?: React.MouseEventHandler;
 }
 
 const Place: React.FC<IProps> = ({
@@ -17,34 +17,33 @@ const Place: React.FC<IProps> = ({
   style,
   className,
   onHover,
-  onClick
+  onClick,
 }) => {
-  const context = useContext(orbitalContext)
+  const context = useContext(orbitalContext);
 
   if (!context) {
-    // TODO: handle this
-    throw 'invalid context'
+    throw new Error('invalid context');
   }
 
-  const { radius } = context
-  const radAngle = angle * (Math.PI / 180)
-  const d = (distance || 0) * radius
-  const x = d * Math.cos(radAngle)
-  const y = d * Math.sin(radAngle)
+  const { radius } = context;
+  const radAngle = angle * (Math.PI / 180);
+  const d = (distance || 0) * radius;
+  const x = d * Math.cos(radAngle);
+  const y = d * Math.sin(radAngle);
 
-  const params = className ? { className } : {}
+  const params = className ? { className } : {};
 
   const onEnter = useCallback(() => {
     if (onHover) {
-      onHover(true)
+      onHover(true);
     }
-  }, [onHover])
+  }, [onHover]);
 
   const onLeave = useCallback(() => {
     if (onHover) {
-      onHover(false)
+      onHover(false);
     }
-  }, [onHover])
+  }, [onHover]);
 
   return (
     <div
@@ -56,13 +55,13 @@ const Place: React.FC<IProps> = ({
         position: 'absolute',
         left: x,
         top: y,
-        transform: 'translate(-50%, -50%)'
+        transform: 'translate(-50%, -50%)',
       }}
       onClick={onClick}
     >
       {children}
     </div>
-  )
-}
+  );
+};
 
-export default Place
+export default Place;

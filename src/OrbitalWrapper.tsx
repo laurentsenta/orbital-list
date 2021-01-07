@@ -3,46 +3,50 @@ import React, {
   useCallback,
   useLayoutEffect,
   useRef,
-  useState
-} from 'react'
-import { useEventListener } from './utils'
+  useState,
+} from 'react';
+import { useEventListener } from './utils';
 
 interface IOrbitalContext {
-  radius: number
-  centerX: number
-  centerY: number
+  radius: number;
+  centerX: number;
+  centerY: number;
 }
 
-export const orbitalContext = createContext<IOrbitalContext | null>(null)
+export const orbitalContext = createContext<IOrbitalContext | null>(null);
+
+const useClientSideLayoutEffect = (callback: () => void) => {
+  /* eslint-disable react-hooks/rules-of-hooks */
+  if (typeof window !== 'undefined') {
+    useLayoutEffect(callback, [callback]);
+  }
+};
 
 const OrbitalWrapper: React.FC<{}> = ({ children }) => {
-  const ref = useRef<HTMLDivElement>()
-  const [size, setSize] = useState({ width: 0, height: 0, squareSize: 0 })
+  const ref = useRef<HTMLDivElement>();
+  const [size, setSize] = useState({ width: 0, height: 0, squareSize: 0 });
 
   const onResize = useCallback(() => {
     if (!ref.current) {
-      return
+      return;
     }
 
-    const width = ref.current.offsetWidth
-    const height = ref.current.offsetHeight
-    const squareSize = Math.min(width, height)
-    setSize({ width, height, squareSize })
-  }, [ref, ref.current, setSize])
+    const width = ref.current.offsetWidth;
+    const height = ref.current.offsetHeight;
+    const squareSize = Math.min(width, height);
+    setSize({ width, height, squareSize });
+  }, [ref, setSize]);
 
-  useEventListener('resize', onResize)
+  useEventListener('resize', onResize);
+  useClientSideLayoutEffect(onResize);
 
-  if (typeof window !== 'undefined') {
-    useLayoutEffect(onResize, [onResize])
-  }
-
-  const squareSize = size.squareSize
+  const squareSize = size.squareSize;
 
   const context = {
     radius: squareSize / 2,
     centerX: squareSize / 2,
-    centerY: squareSize / 2
-  }
+    centerY: squareSize / 2,
+  };
 
   return (
     <div
@@ -57,7 +61,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
           height: `${size.squareSize}px`,
           margin: 'auto',
           position: 'relative',
-          overflow: 'hidden'
+          overflow: 'hidden',
         }}
       >
         <div
@@ -66,7 +70,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
             width: '100%',
             height: '100%',
             overflow: 'visible',
-            transform: 'translate(50%, 50%)'
+            transform: 'translate(50%, 50%)',
           }}
         >
           <orbitalContext.Provider value={context}>
@@ -75,7 +79,7 @@ const OrbitalWrapper: React.FC<{}> = ({ children }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default OrbitalWrapper
+export default OrbitalWrapper;
