@@ -1,16 +1,16 @@
-![logo](./social.png?raw=true 'orbital-list logo')
+![logo](https://github.com/laurentsenta/orbital-list/raw/master/social.png?raw=true 'orbital-list logo')
 
 # orbital-list
 
-A React library to display data using circles, orbits, and planets.
+A React library to create interfaces using circles, orbits, and planets.
 
-[![NPM](https://img.shields.io/npm/v/orbital-list.svg)](https://www.npmjs.com/package/orbital-list) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/orbital-list.svg)](https://www.npmjs.com/package/orbital-list)
 
-![capture orbital-list](./capture.png?raw=true 'orbital-list Example')
+![capture orbital-list](https://github.com/laurentsenta/orbital-list/raw/master/capture.png?raw=true 'orbital-list Example')
 
-Visit [laurentsenta.com/orbital-list](http://www.laurentsenta.com/orbital-list/) for an interactive example.
+Visit [orbital-list.laurentsenta.com](https://orbital-list.laurentsenta.com/) for an interactive example.
 
-Or even check out [whena.re](https://whena.re/), it's built with the library and helps you and your team dealing with timezones.
+Check it out in production: **[whena.re](https://whena.re/)** is built with the library and helps you and your team to deal with timezones.
 
 ## Install
 
@@ -29,6 +29,9 @@ yarn add orbital-list
 ## Usage
 
 The library provides a set of components.
+
+Check the example to see the code behind the [demo](https://orbital-list.laurentsenta.com/).
+
 
 ```tsx
 import React, { Component } from 'react'
