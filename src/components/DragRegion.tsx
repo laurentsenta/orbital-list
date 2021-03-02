@@ -138,6 +138,7 @@ const DragRegion: React.FC<{ onDrag: (i: IDragInfo) => void }> = ({
         top: 0,
         transform: 'translate(-50%, -50%)',
         borderRadius: '50%',
+        cursor: 'move',
       }}
       ref={ref}
     />
